@@ -2,13 +2,18 @@ from myhdl import block, Signal, intbv, always
 
 
 @block
-def generate_sawtooth_signal(output, clk, reset, bit_width, phase_limit):
+def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_width: int, phase_limit: int):
     """
-    output - sawtooth signal
-    clk - clock signal
-    reset - reset signal
-    bit_width - maximum bit width
-    phase_limit - limit of phase
+    Architecture of block generating sawtooth signal
+    Args:
+        output: (Signal) - output signal with sawtooth wave generated
+        clk: (Signal) - system clock signal
+        reset: (Signal) - reset signal
+        bit_width: (int) - parameter from SystemSettings class - maximum bit width of the signal
+        phase_limit: (int) - parameter from SystemSettings class needed to determine behaviour of the block
+
+    Yields:
+        logic: describing behaviour of the block
     """
 
     # counter for phase
