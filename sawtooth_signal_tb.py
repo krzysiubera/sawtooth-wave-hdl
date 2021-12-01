@@ -3,7 +3,7 @@ from sawtooth_signal import generate_sawtooth_signal
 
 
 @block
-def generate_sawtooth_signal_testbench(system_settings):
+def sawtooth_tb(system_settings):
 
     # declare signals
     output = Signal(intbv(0)[system_settings.bit_width:])
