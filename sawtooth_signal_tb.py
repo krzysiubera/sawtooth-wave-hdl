@@ -3,12 +3,16 @@ from sawtooth_signal import generate_sawtooth_signal
 from system_settings import SystemSettings
 
 
+results = []
+
+
 @block
-def sawtooth_tb(system_settings: SystemSettings):
+def sawtooth_tb(system_settings: SystemSettings, periods: int):
     """
     Test bench for sawtooth wave generator
     Args:
         system_settings: (SystemSettings) - settings for the system encapsulated in the class
+        periods: (int) - how many periods of the signal do we want to create
 
     Yields:
         DUT: instance of the tested device
@@ -36,15 +40,13 @@ def sawtooth_tb(system_settings: SystemSettings):
 
     @instance
     def stimulus():
-        for i in range(8 * system_settings.phase_limit):
-            yield clk.posedge
+        reset.next = 1
+        yield clk.posedge
+        reset.next = 0
 
-        for i in range(4):
-            if i < 2:
-                reset.next = True
-            else:
-                reset.next = False
+        for i in range(periods * system_settings.phase_limit):
             yield clk.posedge
+            results.append(int(output))
 
         raise StopSimulation
 
