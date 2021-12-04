@@ -1,4 +1,4 @@
-from myhdl import block, Signal, intbv, always
+from myhdl import block, Signal, intbv, always, always_seq
 
 
 @block
@@ -19,7 +19,7 @@ def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_wid
     # counter for phase
     phase_counter = Signal(intbv(0)[bit_width:])
 
-    @always(clk.posedge)
+    @always_seq(clk.posedge, reset=reset)
     def logic():
 
         if reset == 1:

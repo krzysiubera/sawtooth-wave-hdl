@@ -1,4 +1,4 @@
-from myhdl import always, delay, StopSimulation, instance, Signal, intbv, block
+from myhdl import always, delay, StopSimulation, instance, Signal, intbv, block, ResetSignal
 from sawtooth_signal import generate_sawtooth_signal
 from system_settings import SystemSettings
 
@@ -23,7 +23,7 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
     # declare signals
     output = Signal(intbv(0)[system_settings.bit_width:])
     clk = Signal(bool(0))
-    reset = Signal(bool(0))
+    reset = ResetSignal(1, active=1, isasync=False)
 
     # instantiate DUT
     DUT = generate_sawtooth_signal(output=output, clk=clk, reset=reset, bit_width=system_settings.bit_width,
