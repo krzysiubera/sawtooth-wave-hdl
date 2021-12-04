@@ -4,7 +4,5 @@ from system_settings import SystemSettings
 
 system_settings = SystemSettings()
 tb = sawtooth_tb(system_settings, periods=8)
-tb.config_sim(trace=True)
+# tb.config_sim(trace=True)
 tb.run_sim()
-print(results)
-

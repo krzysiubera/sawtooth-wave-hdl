@@ -1,4 +1,4 @@
-from myhdl import block, Signal, intbv, always, always_seq
+from myhdl import block, Signal, intbv, always, always_seq, always_comb
 
 
 @block
@@ -24,13 +24,14 @@ def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_wid
 
         if reset == 1:
             phase_counter.next = 0
-            output.next = 0
         else:
             if phase_counter == phase_limit - 1:
                 phase_counter.next = 0
-                output.next = 0
             else:
-                output.next = output + 1
                 phase_counter.next = phase_counter + 1
 
-    return logic
+    @always_comb
+    def comb_logic():
+        output.next = phase_counter
+
+    return logic, comb_logic
