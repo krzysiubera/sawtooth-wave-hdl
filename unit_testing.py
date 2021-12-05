@@ -40,6 +40,17 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
             self.assertEqual(sawtooth_signal_tb.results, expected_wave)
             sawtooth_signal_tb.results = []
 
+    def test_invalid_clock_value(self):
+        """
+        Value of half of clock period (scaled to nano seconds) should be an integer not equal to 0. If this is the
+        case, then exception ValueError should be thrown
+        """
+        with self.assertRaises(ValueError, msg="Invalid value of clock frequency provided"):
+            self.periods_to_run = 2
+            self.system_settings = SystemSettings(desired_clk_freq=1e9, bit_width=16, desired_wave_freq=1 / 350e-9)
+            tb = sawtooth_tb(self.system_settings, periods=self.periods_to_run)
+            tb.run_sim()
+
     def get_expected_wave(self):
         return [num % self.system_settings.phase_limit for num in range(0, self.periods_to_run *
                                                                         self.system_settings.phase_limit)]

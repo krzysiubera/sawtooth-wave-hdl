@@ -32,7 +32,7 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
     # determine half of clock's period
     half_period = int(1 / system_settings.desired_clk_freq * 1e9 / 2)
     if half_period == 0:
-        raise RuntimeWarning("Invalid value of clock frequency provided")
+        raise ValueError("Invalid value of clock frequency provided")
 
     @always(delay(half_period))
     def drive_clk():
