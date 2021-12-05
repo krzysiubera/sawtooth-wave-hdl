@@ -15,4 +15,15 @@ class SystemSettings:
 
     @property
     def phase_limit(self) -> int:
+        """
+        Max counting value (int)
+        """
         return int(self.desired_clk_freq / self.desired_wave_freq)
+
+    @property
+    def check_overflow(self) -> bool:
+        """
+        Indicator if an overflow happens. If it happens, bit width of the signal is not enough to generate signal
+        properly
+        """
+        return True if self.desired_clk_freq / self.desired_wave_freq > 2 ** self.bit_width else False
