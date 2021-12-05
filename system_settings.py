@@ -14,9 +14,5 @@ class SystemSettings:
         self.desired_wave_freq = desired_wave_freq
 
     @property
-    def frequency_scalling_factor(self):
-        return self.desired_clk_freq / ((2 ** self.bit_width) * self.desired_wave_freq)
-
-    @property
     def phase_limit(self):
-        return int(self.frequency_scalling_factor * (2 ** self.bit_width))
+        return int(self.desired_clk_freq / self.desired_wave_freq)
