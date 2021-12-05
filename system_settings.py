@@ -1,6 +1,6 @@
 class SystemSettings:
 
-    def __init__(self, desired_clk_freq=0.5e9, bit_width=16, desired_wave_freq=1/350e-9):
+    def __init__(self, desired_clk_freq: float = 0.5e9, bit_width: int = 16, desired_wave_freq: float = 1/350e-9):
         """
         Parameters needed for initialization of the system
         Args:
@@ -14,5 +14,5 @@ class SystemSettings:
         self.desired_wave_freq = desired_wave_freq
 
     @property
-    def phase_limit(self):
+    def phase_limit(self) -> int:
         return int(self.desired_clk_freq / self.desired_wave_freq)

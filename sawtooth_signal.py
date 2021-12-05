@@ -1,4 +1,4 @@
-from myhdl import block, Signal, intbv, always, always_seq, always_comb
+from myhdl import block, Signal, intbv, always_seq, always_comb
 
 
 @block
