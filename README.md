@@ -1,1 +1,1 @@
-#sawtooth-wave-hdl
+Generator of sawtooth wave
