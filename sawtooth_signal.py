@@ -13,14 +13,15 @@ def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_wid
         phase_limit: (int) - parameter from SystemSettings class needed to determine behaviour of the block
 
     Yields:
-        logic: describing behaviour of the block
+        seq_logic: sequential logic of the design
+        comb_logic: combination logic of the design
     """
 
     # counter for phase
     phase_counter = Signal(intbv(0)[bit_width:])
 
     @always_seq(clk.posedge, reset=reset)
-    def logic():
+    def seq_logic():
 
         if reset == 1:
             phase_counter.next = 0
@@ -34,4 +35,4 @@ def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_wid
     def comb_logic():
         output.next = phase_counter
 
-    return logic, comb_logic
+    return seq_logic, comb_logic
