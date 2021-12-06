@@ -1,8 +1,10 @@
 from myhdl import always, delay, StopSimulation, instance, Signal, intbv, block, ResetSignal
 from sawtooth_signal import generate_sawtooth_signal
 from system_settings import SystemSettings
+from exceptions import InvalidClockPeriod
 
 
+# global variable for storing values from the output
 results = []
 
 
@@ -32,7 +34,7 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
     # determine half of clock's period
     half_period = int(1 / system_settings.desired_clk_freq * 1e9 / 2)
     if half_period == 0:
-        raise ValueError("Invalid value of clock frequency provided")
+        raise InvalidClockPeriod("Invalid value of clock frequency provided")
 
     @always(delay(half_period))
     def drive_clk():

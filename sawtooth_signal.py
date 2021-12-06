@@ -1,4 +1,5 @@
 from myhdl import block, Signal, intbv, always_seq, always_comb
+from exceptions import OutputSignalOverflow
 
 
 @block
@@ -29,7 +30,10 @@ def generate_sawtooth_signal(output: Signal, clk: Signal, reset: Signal, bit_wid
             if phase_counter == phase_limit - 1:
                 phase_counter.next = 0
             else:
-                phase_counter.next = phase_counter + 1
+                try:
+                    phase_counter.next = phase_counter + 1
+                except ValueError:
+                    raise OutputSignalOverflow(f"Bit width: {bit_width} is too small to handle output value")
 
     @always_comb
     def comb_logic():

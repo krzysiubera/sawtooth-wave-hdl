@@ -2,6 +2,7 @@ import unittest
 from system_settings import SystemSettings
 from sawtooth_signal_tb import sawtooth_tb
 import sawtooth_signal_tb
+from exceptions import OutputSignalOverflow, InvalidClockPeriod
 
 
 class TestSawtoothSignalGenerator(unittest.TestCase):
@@ -45,10 +46,10 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
     def test_invalid_clock_value(self):
         """
         Value of half of clock period (scaled to nano seconds) should be an integer not equal to 0. If this is the
-        case, then exception ValueError should be thrown
+        case, then exception InvalidClockPeriod should be thrown
         """
-        with self.assertRaises(ValueError, msg="Invalid value of clock frequency provided"):
-            self.periods_to_run = 2
+        with self.assertRaises(InvalidClockPeriod):
+            self.periods_to_run = 1
             self.system_settings = SystemSettings(desired_clk_freq=1e9, bit_width=16, desired_wave_freq=1 / 350e-9)
             tb = sawtooth_tb(self.system_settings, periods=self.periods_to_run)
             tb.run_sim()
@@ -65,17 +66,24 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
         bit_width = 3
         self.periods_to_run = 1
 
-        # frequency of desired wave frequency is changing - some will raise an exception, some not
-        for wave_freq in (0.5*1e3, 0.5*1e4, 0.5*1e5, 0.5*1e6, 0.5*1e7):
+        # frequency of desired wave frequency is changing
+        for wave_freq in (0.5*1e4, 0.5*1e5, 0.5*1e6, 0.5*1e7, 0.5*1e8):
             self.system_settings = SystemSettings(desired_clk_freq=clk_freq, bit_width=bit_width,
                                                   desired_wave_freq=wave_freq)
 
             if self.system_settings.check_overflow:
-                with self.assertRaises(ValueError):
+                with self.assertRaises(OutputSignalOverflow):
                     tb = sawtooth_tb(system_settings=self.system_settings, periods=self.periods_to_run)
                     tb.run_sim()
             else:
-                self.assertTrue(1)
+                # testing if exception has not been thrown
+                try:
+                    tb = sawtooth_tb(system_settings=self.system_settings, periods=self.periods_to_run)
+                    tb.run_sim()
+                except OutputSignalOverflow:
+                    self.fail("Test overflow failed")
+                else:
+                    self.assertTrue(1)
 
     def get_expected_wave(self):
         return [num % self.system_settings.phase_limit for num in range(0, self.periods_to_run *
