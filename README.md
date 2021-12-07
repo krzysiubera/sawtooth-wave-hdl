@@ -12,3 +12,9 @@ Generator of sawtooth wave written using myhdl package and converted to VHDL.
 
 ## Information about Python version and packages
 Project was written in Python 3.8.2. Used packages and their version were put to requirements.txt file.
+
+## Example results
+Sawtooth wave obtained with settings: clock frequency 500 MHz, output signal frequency 1 MHz, 16-bit output signal. 
+Visualization was done with GTKWave.
+<img src="images/visualization.png"/>
+ 
