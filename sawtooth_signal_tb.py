@@ -25,7 +25,7 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
     # declare signals
     output = Signal(intbv(0)[system_settings.bit_width:])
     clk = Signal(bool(0))
-    reset = ResetSignal(1, active=1, isasync=False)
+    reset = ResetSignal(0, active=0, isasync=False)
 
     # instantiate DUT
     DUT = generate_sawtooth_signal(output=output, clk=clk, reset=reset, bit_width=system_settings.bit_width,
@@ -42,9 +42,9 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
 
     @instance
     def stimulus():
-        reset.next = 1
-        yield clk.posedge
         reset.next = 0
+        yield clk.posedge
+        reset.next = 1
 
         for i in range(periods * system_settings.phase_limit):
             yield clk.posedge
