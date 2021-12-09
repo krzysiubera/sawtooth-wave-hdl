@@ -2,7 +2,7 @@ import unittest
 from system_settings import SystemSettings
 from sawtooth_signal_tb import sawtooth_tb
 import sawtooth_signal_tb
-from exceptions import OutputSignalOverflow, InvalidClockPeriod
+from exceptions import InvalidClockPeriod
 
 
 class TestSawtoothSignalGenerator(unittest.TestCase):
@@ -72,7 +72,8 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
                                                   desired_wave_freq=wave_freq)
 
             if self.system_settings.check_overflow:
-                with self.assertRaises(OutputSignalOverflow):
+                with self.assertRaises(ValueError, msg=f"intbv value {self.system_settings.bit_width} >= "
+                                                       f"maximum {self.system_settings.bit_width}"):
                     tb = sawtooth_tb(system_settings=self.system_settings, periods=self.periods_to_run)
                     tb.run_sim()
             else:
@@ -80,8 +81,8 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
                 try:
                     tb = sawtooth_tb(system_settings=self.system_settings, periods=self.periods_to_run)
                     tb.run_sim()
-                except OutputSignalOverflow:
-                    self.fail("Test overflow failed")
+                except ValueError as exc:
+                    self.fail(f"Test overflow failed. The reason: {exc}")
                 else:
                     self.assertTrue(1)
 
