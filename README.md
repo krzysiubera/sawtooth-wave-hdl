@@ -16,5 +16,6 @@ Project was written in Python 3.8.2. Used packages and their version were put to
 ## Example results
 Sawtooth wave obtained with settings: clock frequency 500 MHz, output signal frequency 1 MHz, 16-bit output signal. 
 Visualization was done with GTKWave.
+
 <img src="images/visualization.png"/>
  
