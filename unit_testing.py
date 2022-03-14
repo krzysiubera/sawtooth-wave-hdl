@@ -12,7 +12,7 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
 
     def test_periods_signal(self):
         """
-        Simple test case with clock frequency 0.5 MHz, 16 bit width, desired period of signal 350 ns.
+        Simple test case with clock frequency 0.5 MHz, 16 bit width, desired period of signal 1 us.
         Generating from 1 to 7 periods of the signal and checking if output signal is the same as expected.
         """
 
@@ -35,7 +35,7 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
 
         for signal_freq in (1000, 2000, 3000, 4000, 5000):
             self.periods_to_run = 8
-            self.system_settings = SystemSettings(desired_clk_freq=2e6, bit_width=16, desired_wave_freq=signal_freq)
+            self.system_settings = SystemSettings(clk_freq=2e6, bit_width=16, wave_freq=signal_freq)
             tb = sawtooth_tb(self.system_settings, periods=self.periods_to_run)
             tb.run_sim()
 
@@ -50,7 +50,7 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
         """
         with self.assertRaises(InvalidClockPeriod):
             self.periods_to_run = 1
-            self.system_settings = SystemSettings(desired_clk_freq=1e9, bit_width=16, desired_wave_freq=1 / 350e-9)
+            self.system_settings = SystemSettings(clk_freq=1e9, bit_width=16, wave_freq=1 / 350e-9)
             tb = sawtooth_tb(self.system_settings, periods=self.periods_to_run)
             tb.run_sim()
 
@@ -68,8 +68,8 @@ class TestSawtoothSignalGenerator(unittest.TestCase):
 
         # frequency of desired wave frequency is changing
         for wave_freq in (0.5*1e4, 0.5*1e5, 0.5*1e6, 0.5*1e7, 0.5*1e8):
-            self.system_settings = SystemSettings(desired_clk_freq=clk_freq, bit_width=bit_width,
-                                                  desired_wave_freq=wave_freq)
+            self.system_settings = SystemSettings(clk_freq=clk_freq, bit_width=bit_width,
+                                                  wave_freq=wave_freq)
 
             if self.system_settings.check_overflow:
                 with self.assertRaises(ValueError, msg=f"intbv value {self.system_settings.bit_width} >= "

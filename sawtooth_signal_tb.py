@@ -32,7 +32,7 @@ def sawtooth_tb(system_settings: SystemSettings, periods: int):
                                    phase_limit=system_settings.phase_limit)
 
     # determine half of clock's period
-    half_period = int(1 / system_settings.desired_clk_freq * 1e9 / 2)
+    half_period = int(1 / system_settings.clk_freq * 1e9 / 2)
     if half_period == 0:
         raise InvalidClockPeriod("Invalid value of clock frequency provided")
 

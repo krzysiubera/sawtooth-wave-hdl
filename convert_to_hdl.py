@@ -16,4 +16,4 @@ dut = generate_sawtooth_signal(output=output, clk=clk, reset=reset, bit_width=sy
                                phase_limit=system_settings.phase_limit)
 
 # convert to HDL
-dut.convert(hdl='VHDL', initial_values=True)
+dut.convert(hdl='verilog', initial_values=True)
