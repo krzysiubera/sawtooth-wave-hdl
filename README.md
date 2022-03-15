@@ -1,4 +1,4 @@
-Generator of sawtooth wave written using myhdl package and converted to VHDL. 
+Generator of sawtooth wave written using Python's myhdl package. The design was later converted to VHDL and Verilog. 
 
 ## Structure of files:
 - sawtooth_signal.py - architecture of the block generating sawtooth signal
